@@ -1,0 +1,64 @@
+*{
+	padding: 0;
+	margin: 0;
+}
+html{
+	font-size: 30px;
+}
+ul,li,ol{
+	list-style: none;
+}
+.calendar{
+	width: 100%;
+	padding: 0.1rem;
+	background-color: #4a90e2;
+}
+.calendar .head1{
+	text-align: center;
+	font-size: 13px;
+	color: #fff;
+}
+.calendar .head2{
+	margin-top: 10px;
+	display: flex;
+	text-align: center;
+	color: #e1e1e1;
+	font-size: 12px;
+}
+.calendar .head2 span{
+	flex: 1;
+}
+.calendar .bottom{
+	margin-top: 5px;
+}
+.swiper-container {
+    width:100%;
+}  
+.calendar .bottom ul li{
+	float: left;
+	width: calc(100%/7);
+	text-align: center;
+	color: #fff;
+	margin: 3px 0;
+	font-size: 12px;
+}
+.calendar .bottom li span{
+	display: block;
+	margin: auto;
+	width: 60%;
+	height: 20px;
+	line-height: 20px;
+	border-radius: 50%;
+}
+.calendar .bottom li span.active{
+	color: #4a90e2;
+	background-color: #fff;
+}
+.calendar .bottom ul:after{
+	content: '';
+	display: block;
+	visibility: hidden;
+	height: 0;
+	width: 0;
+	clear: both;
+}

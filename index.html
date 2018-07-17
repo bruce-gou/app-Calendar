@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<link rel="stylesheet" type="text/css" href="swiper/swiper.min.css"/>
+		<link rel="stylesheet" type="text/css" href="calendar/index.css"/>
+		<script src="swiper/swiper.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="calendar/index.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div id="calendar">
+			
+		</div>
+	</body>
+	<script type="text/javascript">
+		var cld =new Calendar({
+				el:'#calendar',
+				cBack:function(data){
+					console.log(JSON.stringify(data));
+				}
+			});
+	</script>
+</html>
