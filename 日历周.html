@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>Document</title>
+	<style type="text/css">
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		span{
+			display: inline-block;
+			width: 15px;
+			text-align: center;
+			margin: 10px;
+		}
+		
+	</style>
+</head>
+<body>
+</body>
+<script type="text/javascript">
+	(function(){
+		main();
+		function main(){
+			var dates = inputTime();
+			var y = dates[0];
+			var m = dates[1];
+			var w = dates[2];
+			var yearDay = year(y);//年份天数
+			var monthDay = month(m,y);//月份天数
+			var currentMonthDay = currentMonth(m,y);//当月天数
+			var week = dayofweek(yearDay+monthDay);//当月第一天是周几
+			var weekDate = weekDay(w,week,currentMonthDay,m,y);//给出指定周数的值
+			consoles(week,currentMonthDay,weekDate,y,m);
+		}
+		//时间输入
+		function inputTime(){
+			var time = prompt("请输入要查询的时间年/月/周以逗号隔开(2017,2,1):","");
+			if(time){
+				var reg = /,|，/g;
+				time = time.split(reg);
+				time = time.map(function(num){
+					return parseInt(num);
+				})
+				var len = time.length;
+				if(len !== 3){
+					alert('输入格式有误！');
+					location.href = location.href;
+				}else{
+					for (var i = 0; i < len; i++) {
+						var n = time[i];
+						if(!n || n < 1 || time[0] < 1970 || time[1] >12 || time[2] > 5){
+							alert('输入格式有误！');
+							location.href = location.href;
+						}
+					}
+				}
+				return time;
+			}
+		}
+		//年份相差天数
+		function year(y){
+			var allDay=0;
+			for(var i = 1970;i < y;i++){
+				if(i % 4 == 0 && i % 100 != 0 || i % 400 == 0){
+					allDay += 366;
+				}else{
+					allDay += 365; 
+				} 
+			}
+			return allDay;
+		}
+		//计算月份相差天数
+		function month(m,y){
+			var allDay = 0;
+			switch(m - 1){
+				case 11:allDay += 30;
+				case 10:allDay += 31;
+				case 9:allDay += 30;
+				case 8:allDay += 31;
+				case 7:allDay += 31;
+				case 6:allDay += 30;
+				case 5:allDay += 31;
+				case 4:allDay += 30;
+				case 3:allDay += 31;
+				case 2:
+						if(y % 4 == 0 && y % 100 != 0 || y % 400 == 0){
+							allDay += 29;
+							
+						}else{
+							allDay += 28;
+						}
+				case 1:allDay += 31;
+			
+			}
+			allDay += 1;//这里加1可以得出当前月第一天是星期几，不加1是上月最后一天是星期几
+			return allDay;
+		}
+		//计算当月天数
+		function currentMonth(m,y){
+			var monthDay  = 0;
+			switch(m){
+				case 1:
+				case 3:
+				case 5:
+				case 7:
+				case 8:
+				case 10:
+				case 12:monthDay = 31;break;
+				case 4:
+				case 6:
+				case 9:
+				case 11:monthDay = 30;break;
+				case 2:
+					if(y % 4 == 0 && y % 100 != 0 || y % 400 == 0){
+							monthDay = 29;
+							
+						}else{
+							monthDay = 28;
+					}	
+			}
+			return monthDay ;
+		}
+		//计算给定的总天数是星期几,当前月第一天是星期几
+		function dayofweek(day){
+			//1970 1月1日 星期四
+			var week = (day+3) % 7;
+			return week;
+		}
+		//根绝周数给出时间
+		function weekDay(w,week,currentMonthDay,m,y){
+			//w 是第几周
+			//week 是周几
+			//currentMonthDay 当月天数
+			//m 月份
+			//y 年
+			var y2 = y;
+			var m2 = m;
+			week = week>0?week:7;
+			var obj = {begDay:'',endDay:''}
+			var day = 7- (week - 1);
+			if(week === 1){
+				obj.begDay = 7*(w-1) + 1;
+				obj.endDay = 7*w;
+			}else{
+				obj.begDay = 7*(w-1) + day + 1;
+				obj.endDay = 7*w + day;
+			}
+			if(obj.begDay > currentMonthDay){
+				alert('当月没有第'+w+'周，请重新输入');
+			}else if(obj.endDay > currentMonthDay){
+				obj.endDay = obj.endDay - currentMonthDay;
+				if(m === 12){
+					m2 = 1;
+					y2 += 1;
+				}else{
+					m2 = m2 + 1;
+				}
+				
+			}
+			obj.begDay ='周一：'+y+'年'+m+'月'+obj.begDay+'日';
+			obj.endDay = '周日：'+y2+'年'+m2+'月'+obj.endDay+'日';
+			return obj;
+		}
+		//打印日历
+		function consoles(week,currentMonthDay,weekDate,y,m){
+			var weekHead ='<h1>'+ y +'年'+ m +'月</h1></br>'+
+						'<span>日</span><span>一</span><span>二</span><span>三</span><span>四</span>'+
+					    '<span>五</span><span>六</span></br>';
+			document.write(weekHead);
+			for(var i = 0;i<week;i++){
+				document.write("<span></span>");
+			}
+			for(var i = 1;i <= currentMonthDay;i++){
+				document.write('<span>'+i+'</span>');
+				if(i%7==(7-week)){
+					document.write("</br>");
+				}else if(week==0){
+					if(i%7==0){
+						document.write("</br>");	
+					}
+				}	
+			}
+			document.write("</br>");
+			document.write(weekDate.begDay+'</br>')
+			document.write(weekDate.endDay+'</br>')
+		}
+	})()
+</script>
+</html>
